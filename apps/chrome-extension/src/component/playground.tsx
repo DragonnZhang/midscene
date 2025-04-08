@@ -32,6 +32,16 @@ const formatErrorMessage = (e: any): string => {
   return 'Unknown error';
 };
 
+// 添加语音播报函数
+const speak = (text: string) => {
+  if (!chrome.tts) {
+    console.warn('Chrome TTS API is not available');
+    return;
+  }
+
+  chrome.tts.speak(text);
+};
+
 // Blank result template
 const blankResult = {
   result: null,
@@ -152,11 +162,13 @@ export function BrowserExtensionPlayground({
         result.result = await activeAgent?.aiAction(value.prompt);
       } else if (value.type === 'aiQuery') {
         result.result = await activeAgent?.aiQuery(value.prompt);
+        speak(JSON.stringify(result.result));
       } else if (value.type === 'aiAssert') {
         result.result = await activeAgent?.aiAssert(value.prompt, undefined, {
           keepRawResponse: true,
         });
       }
+      console.log('🚀 ~ handleRun ~ result:', result);
     } catch (e: any) {
       result.error = formatErrorMessage(e);
       console.error(e);
