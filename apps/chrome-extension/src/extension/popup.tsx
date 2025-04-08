@@ -3,7 +3,6 @@ import { globalThemeConfig } from '@midscene/visualizer';
 import '@midscene/visualizer/index.css';
 import { ConfigProvider } from 'antd';
 import { BrowserExtensionPlayground } from '../component/playground';
-import { getExtensionVersion } from '../utils';
 import './popup.less';
 import {
   ChromeExtensionProxyPage,
@@ -16,11 +15,7 @@ const extensionAgentForTab = (forceSameTabNavigation = true) => {
   return new ChromeExtensionProxyPageAgent(page);
 };
 
-declare const __SDK_VERSION__: string;
-
 export function PlaygroundPopup() {
-  const extensionVersion = getExtensionVersion();
-
   return (
     <ConfigProvider theme={globalThemeConfig()}>
       <div className="popup-wrapper">
